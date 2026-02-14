@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
+      includeAssets: ['favicon.ico', 'icon.svg', '*.png'],
       manifest: {
         name: '合成大西瓜',
         short_name: '合成大西瓜',
@@ -13,6 +14,7 @@ export default defineConfig({
         theme_color: '#ffe89d',
         background_color: '#ffe89d',
         display: 'standalone',
+        orientation: 'portrait',
         start_url: '/madeWatermelon/',
         scope: '/madeWatermelon/',
         icons: [
@@ -71,6 +73,9 @@ export default defineConfig({
             }
           }
         ]
+      },
+      devOptions: {
+        enabled: false
       }
     })
   ],

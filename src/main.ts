@@ -4,19 +4,6 @@ import app from './app';
 import { init, saveGame, loadGame, clearGame } from './core';
 import './index.css';
 
-// 注册 Service Worker
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/madeWatermelon/sw.js')
-      .then((registration) => {
-        console.log('SW registered: ', registration);
-      })
-      .catch((registrationError) => {
-        console.log('SW registration failed: ', registrationError);
-      });
-  });
-}
-
 // PWA 安装提示
 let deferredPrompt: any;
 window.addEventListener('beforeinstallprompt', (e) => {
