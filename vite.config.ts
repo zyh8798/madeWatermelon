@@ -6,7 +6,6 @@ export default defineConfig({
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['fruits/*.png', 'box2d.min.js', 'pixi-6.4.2.min.js'],
       manifest: {
         name: '合成大西瓜',
         short_name: '合成大西瓜',
