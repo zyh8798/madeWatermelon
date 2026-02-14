@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
-  base: '/madeWatermelon/',
+  base: '/',
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
@@ -13,11 +13,11 @@ export default defineConfig({
         theme_color: '#ffe89d',
         background_color: '#ffe89d',
         display: 'standalone',
-        start_url: '/madeWatermelon/',
-        scope: '/madeWatermelon/',
+        start_url: '/',
+        scope: '/',
         icons: [
           {
-            src: '/madeWatermelon/icon.svg',
+            src: '/icon.svg',
             sizes: 'any',
             type: 'image/svg+xml'
           }
@@ -25,9 +25,6 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
-        modifyURLPrefix: {
-          '': '/madeWatermelon/'
-        },
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/.*/i,
