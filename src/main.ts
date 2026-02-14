@@ -6,20 +6,31 @@ import './index.css';
 
 // PWA 安装提示
 let deferredPrompt: any;
+
+// 调试信息
+console.log('=== PWA 调试信息 ===');
+console.log('Service Worker 支持:', 'serviceWorker' in navigator);
+console.log('beforeinstallprompt 支持:', 'onbeforeinstallprompt' in window);
+
 window.addEventListener('beforeinstallprompt', (e) => {
+  console.log('=== beforeinstallprompt 事件触发 ===');
   e.preventDefault();
   deferredPrompt = e;
+  console.log('安装提示已保存，可以显示安装按钮');
+  
   // 显示安装提示按钮
   const installBtn = document.getElementById('installBtn');
   if (installBtn) {
     installBtn.style.display = 'block';
+    console.log('安装按钮已显示');
     installBtn.addEventListener('click', () => {
+      console.log('用户点击了安装按钮');
       deferredPrompt.prompt();
       deferredPrompt.userChoice.then((choiceResult: any) => {
         if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the install prompt');
+          console.log('用户接受了安装提示');
         } else {
-          console.log('User dismissed the install prompt');
+          console.log('用户拒绝了安装提示');
         }
         deferredPrompt = null;
         if (installBtn) {
@@ -27,6 +38,15 @@ window.addEventListener('beforeinstallprompt', (e) => {
         }
       });
     });
+  }
+});
+
+// 检查应用是否已安装
+window.addEventListener('appinstalled', () => {
+  console.log('=== 应用已安装 ===');
+  const installBtn = document.getElementById('installBtn');
+  if (installBtn) {
+    installBtn.style.display = 'none';
   }
 });
 
