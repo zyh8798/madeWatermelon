@@ -26,6 +26,9 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        modifyURLPrefix: {
+          '': '/madeWatermelon/'
+        },
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/.*/i,
