@@ -227,3 +227,85 @@ export const init = () => {
   };
   loop();
 };
+
+// 保存游戏状态
+export const saveGame = () => {
+  const gameState = {
+    fruits: Object.keys(fruits).map((id) => {
+      const fruit = fruits[id];
+      const position = fruit.body.GetPosition();
+      return {
+        id: parseInt(id),
+        type: fruit.body.GetUserData().type,
+        x: position.x,
+        y: position.y,
+        angle: fruit.body.GetAngle(),
+      };
+    }),
+    fruitId,
+    currentFruit: currentNextFruit.current,
+    nextFruit: currentNextFruit.next,
+  };
+  localStorage.setItem('watermelonGame', JSON.stringify(gameState));
+};
+
+// 加载游戏状态
+export const loadGame = () => {
+  const savedData = localStorage.getItem('watermelonGame');
+  if (!savedData) {
+    return;
+  }
+
+  try {
+    const gameState = JSON.parse(savedData);
+
+    // 清空当前游戏
+    clearGame();
+
+    // 恢复水果
+    gameState.fruits.forEach((savedFruit: any) => {
+      const fruit = Fruits[savedFruit.type];
+      const fruitBody = world.CreateBody(fruitBodyDef);
+      fruitBody.SetSleepingAllowed(true);
+      fruitBody.SetPositionXY(savedFruit.x, savedFruit.y);
+      fruitBody.SetAngle(savedFruit.angle);
+      fruitBody.CreateFixture(fruitFixtureDefs[savedFruit.type]);
+      fruitBody.SetUserData({ type: savedFruit.type, id: savedFruit.id });
+
+      const sprite = createSprite(savedFruit.type);
+      sprite.x = savedFruit.x * Ratio;
+      sprite.y = savedFruit.y * Ratio;
+      sprite.rotation = savedFruit.angle;
+      app.stage.addChild(sprite);
+
+      fruits[savedFruit.id] = { body: fruitBody, sprite };
+    });
+
+    // 恢复游戏状态
+    fruitId = gameState.fruitId;
+    currentNextFruit.current = gameState.currentFruit;
+    currentNextFruit.next = gameState.nextFruit;
+  } catch (error) {
+    console.error('加载游戏失败:', error);
+  }
+};
+
+// 清空游戏状态
+export const clearGame = () => {
+  // 删除所有水果
+  Object.keys(fruits).forEach((id) => {
+    const fruit = fruits[id];
+    world.DestroyBody(fruit.body);
+    app.stage.removeChild(fruit.sprite);
+    delete fruits[id];
+  });
+
+  // 清空接触和合并状态
+  contactedFruits.clear();
+  mergingFruitSet.clear();
+
+  // 重置水果ID和当前/下一个水果
+  fruitId = 0;
+  currentNextFruit.current = 0;
+  currentNextFruit.next = 0;
+};

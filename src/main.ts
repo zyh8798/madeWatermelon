@@ -1,7 +1,7 @@
 import pixi from './pixi';
 import { Fruits, Height, Width } from './config';
 import app from './app';
-import { init } from './core';
+import { init, saveGame, loadGame, clearGame } from './core';
 import './index.css';
 
 const { Loader } = pixi;
@@ -30,3 +30,8 @@ canvas.style.height = `${Height}px`;
 resetSize();
 
 window.onresize = resetSize;
+
+// 绑定游戏控制按钮事件
+document.getElementById('saveBtn')?.addEventListener('click', saveGame);
+document.getElementById('loadBtn')?.addEventListener('click', loadGame);
+document.getElementById('clearBtn')?.addEventListener('click', clearGame);
