@@ -4,6 +4,45 @@ import app from './app';
 import { init, saveGame, loadGame, clearGame } from './core';
 import './index.css';
 
+// 注册 Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/madeWatermelon/sw.js')
+      .then((registration) => {
+        console.log('SW registered: ', registration);
+      })
+      .catch((registrationError) => {
+        console.log('SW registration failed: ', registrationError);
+      });
+  });
+}
+
+// PWA 安装提示
+let deferredPrompt: any;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // 显示安装提示按钮
+  const installBtn = document.getElementById('installBtn');
+  if (installBtn) {
+    installBtn.style.display = 'block';
+    installBtn.addEventListener('click', () => {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult: any) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the install prompt');
+        } else {
+          console.log('User dismissed the install prompt');
+        }
+        deferredPrompt = null;
+        if (installBtn) {
+          installBtn.style.display = 'none';
+        }
+      });
+    });
+  }
+});
+
 const { Loader } = pixi;
 const images = Fruits.map((i) => i.name);
 const root = document.getElementById('root')!;

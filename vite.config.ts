@@ -19,7 +19,20 @@ export default defineConfig({
           {
             src: '/madeWatermelon/icon.svg',
             sizes: 'any',
-            type: 'image/svg+xml'
+            type: 'image/svg+xml',
+            purpose: 'any maskable'
+          },
+          {
+            src: '/madeWatermelon/icon-192.png',
+            sizes: '192x192',
+            type: 'image/png',
+            purpose: 'any maskable'
+          },
+          {
+            src: '/madeWatermelon/icon-512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any maskable'
           }
         ]
       },
