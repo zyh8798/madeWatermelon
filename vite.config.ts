@@ -23,6 +23,24 @@ export default defineConfig({
             purpose: 'any maskable'
           },
           {
+            src: '/madeWatermelon/icon-72.png',
+            sizes: '72x72',
+            type: 'image/png',
+            purpose: 'any maskable'
+          },
+          {
+            src: '/madeWatermelon/icon-96.png',
+            sizes: '96x96',
+            type: 'image/png',
+            purpose: 'any maskable'
+          },
+          {
+            src: '/madeWatermelon/icon-128.png',
+            sizes: '128x128',
+            type: 'image/png',
+            purpose: 'any maskable'
+          },
+          {
             src: '/madeWatermelon/icon-192.png',
             sizes: '192x192',
             type: 'image/png',
