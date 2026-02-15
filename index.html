@@ -22,7 +22,18 @@
       <button id="saveBtn" class="control-btn">保存</button>
       <button id="loadBtn" class="control-btn">加载</button>
       <button id="clearBtn" class="control-btn">清空</button>
+      <button id="bgmBtn" class="control-btn">BGM 静音</button>
       <button id="installBtn" class="control-btn" style="display: none;">安装应用</button>
+    </div>
+    <div id="textureTip" class="texture-tip" style="display: none;">
+      纹理未加载：请将 fruit_1.png～fruit_11.png 放入项目的 <strong>public/fruits/</strong> 目录后刷新页面。
+      <button type="button" id="textureTipClose">知道了</button>
+    </div>
+    <div id="failOverlay" class="fail-overlay" style="display: none;">
+      <div class="fail-box">
+        <p class="fail-text">失败了</p>
+        <button id="failConfirmBtn" class="control-btn">确认</button>
+      </div>
     </div>
     <footer></footer>
     <script type="module" src="/src/main.ts"></script>

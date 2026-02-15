@@ -15,8 +15,8 @@
     <title>合成大西瓜</title>
     <script src="/madeWatermelon/box2d.min.js"></script>
     <script src="/madeWatermelon/pixi-6.4.2.min.js"></script>
-    <script type="module" crossorigin src="/madeWatermelon/assets/index-ved75HRO.js"></script>
-    <link rel="stylesheet" crossorigin href="/madeWatermelon/assets/index-B9UJmGWF.css">
+    <script type="module" crossorigin src="/madeWatermelon/assets/index-BDAAJpOh.js"></script>
+    <link rel="stylesheet" crossorigin href="/madeWatermelon/assets/index-fl5ZVgoA.css">
   <link rel="manifest" href="/madeWatermelon/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/madeWatermelon/registerSW.js"></script></head>
   <body>
     <div id="root"></div>
@@ -24,8 +24,19 @@
       <button id="saveBtn" class="control-btn">保存</button>
       <button id="loadBtn" class="control-btn">加载</button>
       <button id="clearBtn" class="control-btn">清空</button>
+      <button id="bgmBtn" class="control-btn">BGM 静音</button>
       <button id="installBtn" class="control-btn" style="display: none;">安装应用</button>
     </div>
-    <footer></footer>
+    <div id="textureTip" class="texture-tip" style="display: none;">
+      纹理未加载：请将 fruit_1.png～fruit_11.png 放入项目的 <strong>public/fruits/</strong> 目录后刷新页面。
+      <button type="button" id="textureTipClose">知道了</button>
+    </div>
+    <div id="failOverlay" class="fail-overlay" style="display: none;">
+      <div class="fail-box">
+        <p class="fail-text">失败了</p>
+        <button id="failConfirmBtn" class="control-btn">确认</button>
+      </div>
+    </div>
+    <footer></footer>
   </body>
 </html>

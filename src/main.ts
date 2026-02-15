@@ -1,7 +1,8 @@
 import pixi from './pixi';
 import { Fruits, Height, Width } from './config';
 import app from './app';
-import { init, saveGame, loadGame, clearGame } from './core';
+import { init, saveGame, loadGame, clearGame, setGameOverCallback } from './core';
+import { playBGM, stopBGM, isBGMPlaying } from './sound';
 import './index.css';
 
 // PWA 安装提示
@@ -51,11 +52,64 @@ window.addEventListener('appinstalled', () => {
 });
 
 const { Loader } = pixi;
-const images = Fruits.map((i) => i.name);
+// 使用 Vite 的 base，保证 dev/构建后路径一致
+const base = (typeof import.meta !== 'undefined' && (import.meta as any).env?.BASE_URL) || '';
+const basePath = base.replace(/\/+$/, '') || '';
+const images = Fruits.map((i) => {
+  const name = i.name.startsWith('/') ? i.name.slice(1) : i.name;
+  return basePath ? basePath + '/' + name : '/' + name;
+});
 const root = document.getElementById('root')!;
 const canvas = app.view;
 root.appendChild(canvas);
-Loader.shared.add(images).load(init);
+
+// 先重置 Loader，避免热更新或重复加载导致旧错误状态
+if (typeof Loader.shared.reset === 'function') Loader.shared.reset();
+
+// 添加纹理加载监听
+console.log('开始加载纹理...', images);
+Loader.shared.add(images).load((loader, resources) => {
+  console.log('纹理加载完成');
+  console.log('加载的资源键:', Object.keys(resources));
+  // 确保用 config 的 name（如 /fruits/fruit_1.png）也能取到，避免 Loader 用完整 URL 当 key
+  Fruits.forEach((f, idx) => {
+    const res = resources[images[idx]] || resources[f.name];
+    if (res?.texture && !(resources as any)[f.name]) (resources as any)[f.name] = res;
+  });
+  // 检查每个纹理是否正确加载
+  Fruits.forEach((f) => {
+    const resource = (Loader.shared.resources as any)[f.name] || resources[images[Fruits.indexOf(f)]];
+    if (!resource?.texture) hasTextureError = true;
+    console.log(`${f.name}: 纹理存在=${!!resource?.texture}`);
+  });
+  if (hasTextureError) showTextureTip();
+
+  setGameOverCallback(() => {
+    const el = document.getElementById('failOverlay');
+    if (el) el.style.display = 'flex';
+  });
+  init();
+  playBGM(undefined, 0.5);
+});
+
+// 纹理加载失败时不弹窗阻塞，只打日志并在页面上提示
+let hasTextureError = false;
+Loader.shared.onError.add((error: any) => {
+  hasTextureError = true;
+  console.warn('纹理加载失败（请将 fruit_1.png～fruit_11.png 放入 public/fruits/ 目录）:', error?.message || error);
+});
+
+function showTextureTip() {
+  const el = document.getElementById('textureTip');
+  if (el) {
+    el.style.display = 'block';
+  }
+}
+
+// 添加加载进度监听
+Loader.shared.onProgress.add((loader) => {
+  console.log(`加载进度: ${loader.progress}%`);
+});
 
 const resetSize = () => {
   const { innerWidth, innerHeight } = window;
@@ -81,3 +135,24 @@ window.onresize = resetSize;
 document.getElementById('saveBtn')?.addEventListener('click', saveGame);
 document.getElementById('loadBtn')?.addEventListener('click', loadGame);
 document.getElementById('clearBtn')?.addEventListener('click', clearGame);
+
+document.getElementById('failConfirmBtn')?.addEventListener('click', () => {
+  clearGame();
+  const el = document.getElementById('failOverlay');
+  if (el) el.style.display = 'none';
+});
+
+document.getElementById('textureTipClose')?.addEventListener('click', () => {
+  document.getElementById('textureTip')!.style.display = 'none';
+});
+
+const bgmBtn = document.getElementById('bgmBtn');
+bgmBtn?.addEventListener('click', () => {
+  if (isBGMPlaying()) {
+    stopBGM();
+    bgmBtn.textContent = 'BGM 播放';
+  } else {
+    playBGM(undefined, 0.5);
+    bgmBtn.textContent = 'BGM 静音';
+  }
+});
