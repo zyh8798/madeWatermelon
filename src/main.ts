@@ -2,7 +2,6 @@ import pixi from './pixi';
 import { Fruits, Height, Width } from './config';
 import app from './app';
 import { init, saveGame, loadGame, clearGame, setGameOverCallback } from './core';
-import { playBGM, stopBGM, isBGMPlaying } from './sound';
 import './index.css';
 
 // PWA 安装提示
@@ -89,7 +88,6 @@ Loader.shared.add(images).load((loader, resources) => {
     if (el) el.style.display = 'flex';
   });
   init();
-  playBGM(undefined, 0.5);
 });
 
 // 纹理加载失败时不弹窗阻塞，只打日志并在页面上提示
@@ -144,15 +142,4 @@ document.getElementById('failConfirmBtn')?.addEventListener('click', () => {
 
 document.getElementById('textureTipClose')?.addEventListener('click', () => {
   document.getElementById('textureTip')!.style.display = 'none';
-});
-
-const bgmBtn = document.getElementById('bgmBtn');
-bgmBtn?.addEventListener('click', () => {
-  if (isBGMPlaying()) {
-    stopBGM();
-    bgmBtn.textContent = 'BGM 播放';
-  } else {
-    playBGM(undefined, 0.5);
-    bgmBtn.textContent = 'BGM 静音';
-  }
 });

@@ -74,22 +74,22 @@ canvas {
   right: 20px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 8px;
   z-index: 1000;
 }
 
 .control-btn {
-  padding: 10px 20px;
-  font-size: 14px;
+  padding: 6px 12px;
+  font-size: 12px;
   font-weight: 600;
   color: white;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-  min-width: 80px;
+  min-width: 56px;
 }
 
 .control-btn:hover {
