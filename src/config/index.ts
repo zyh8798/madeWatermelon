@@ -10,8 +10,9 @@ export const Ratio = 35;
 export const TimeStep = 1 / 120;
 export const VelocityIterations = 10;
 export const PositionIterations = 10;
-/** 重力（越小掉落越慢），6 下落较快，避免连点空中合成 */
-export const Gravity = 6;
+/** 重力：移动端帧率较低，用更高重力补偿，PC 用 6 */
+const isMobile = 'ontouchstart' in window || window.innerWidth < 768;
+export const Gravity = isMobile ? 8.5 : 6;
 
 export const Fruits = [
   { name: '/fruits/fruit_1.png', radius: 26, imgRadius: 26 },
