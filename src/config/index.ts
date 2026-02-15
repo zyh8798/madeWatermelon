@@ -10,8 +10,8 @@ export const Ratio = 35;
 export const TimeStep = 1 / 120;
 export const VelocityIterations = 10;
 export const PositionIterations = 10;
-/** 重力（越小掉落越慢），4 下落稍快 */
-export const Gravity = 4;
+/** 重力（越小掉落越慢），6 下落较快，避免连点空中合成 */
+export const Gravity = 6;
 
 export const Fruits = [
   { name: '/fruits/fruit_1.png', radius: 26, imgRadius: 26 },
